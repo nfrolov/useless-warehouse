@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "warehouse",
+  "version": "0.1.0",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "author": "Nikita Frolov <nikita@frolov.fi>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "~4.2.0",
+    "morgan": "~1.0.1",
+    "serve-static": "~1.1.0"
+  }
+}
