@@ -2,6 +2,41 @@ doctype html
 html
   head
     title Connection Information
+    style.
+      body {
+        max-width: 700px;
+        padding: 0 30px;
+        margin: 0 auto;
+        font: 16px sans-serif;
+      }
+      h1 {
+        font-size: 2em;
+      }
+      h2 {
+        font-size: 1.6em;
+      }
+      h3 {
+        font-size: 1em;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      th {
+        text-align: left;
+      }
+      th,
+      td {
+        padding: 3px 0;
+      }
+      .columns {
+        width: 100%;
+      }
+      .columns td:nth-child(2) {
+        width: 35%;
+      }
+      .columns td:nth-child(3) {
+        width: 20%;
+      }
   body
     main
       h1 Connection Information
@@ -33,4 +68,4 @@ html
                     each column in row
                       td= column
             else
-              p Table is currently empty
+              p.empty Table is currently empty
