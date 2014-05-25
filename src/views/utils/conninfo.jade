@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    title Connection Information
+  body
+    main
+      h1 Connection Information
+      section
+        each table in tables
+          article
+            h2= table.name
+            table
+              thead
+                th Name
+                th Type
+                th Nullable
+              tbody
+                each column in table.columns
+                  tr
+                    td= column.column_name
+                    td= column.data_type
+                    td= column.is_nullable

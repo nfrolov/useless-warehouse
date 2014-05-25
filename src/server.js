@@ -1,6 +1,7 @@
 var express = require('express'),
     morgan = require('morgan'),
-    app = express();
+    app = express(),
+    routes = require('./routes');
 
 app.enable('trust proxy');
 app.enable('case sensitive routing');
@@ -11,5 +12,7 @@ app.set('view engine', 'jade');
 
 app.use(morgan('short'));
 app.use(express.static(__dirname + '/../public'));
+
+routes(app);
 
 app.listen(process.env.PORT || 5000);
