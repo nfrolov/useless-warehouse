@@ -2,6 +2,7 @@ var express = require('express'),
     morgan = require('morgan'),
     app = express();
 
+app.enable('trust proxy');
 app.enable('case sensitive routing');
 app.enable('strict routing');
 
