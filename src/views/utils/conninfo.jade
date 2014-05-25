@@ -5,11 +5,11 @@ html
   body
     main
       h1 Connection Information
-      section
+      section.table-container
         each table in tables
-          article
+          article.table
             h2= table.name
-            table
+            table.columns
               thead
                 th Name
                 th Type
@@ -20,3 +20,17 @@ html
                     td= column.column_name
                     td= column.data_type
                     td= column.is_nullable
+            h3 Data
+            if table.data.length > 0
+              table.data
+                thead
+                  tr
+                    each column in table.columns
+                      th= column.column_name
+                tbody
+                  each row in table.data
+                    tr
+                    each column in row
+                      td= column
+            else
+              p Table is currently empty

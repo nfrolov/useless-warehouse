@@ -16,7 +16,10 @@ exports.conninfo = function (req, res) {
       );
     },
     function (result, cb) {
-      async.map(result.rows, function (table, cb) {
+      cb(null, result.rows);
+    },
+    function (tables, cb) {
+      async.map(tables, function (table, cb) {
         client.query(
           " SELECT * " +
           "   FROM information_schema.columns " +
@@ -26,6 +29,19 @@ exports.conninfo = function (req, res) {
           function (err, result) {
             if (err) return cb(err);
             table.columns = result.rows;
+            cb(null, table);
+          }
+        );
+      }, cb);
+    },
+    function (tables, cb) {
+      async.map(tables, function (table, cb) {
+        client.query(
+          " SELECT * " +
+          "   FROM warehouse." + client.escapeIdentifier(table.name),
+          function (err, result) {
+            if (err) return cb(err);
+            table.data = result.rows;
             cb(null, table);
           }
         );
