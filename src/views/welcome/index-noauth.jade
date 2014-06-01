@@ -1,12 +1,5 @@
-doctype html
-html
-  head
-    link(rel="stylesheet", href="/assets/styles.css")
-    title Sign In
-  body.template-index
-    .page-wrapper
-      header.page-header
-        a.signin(href="/signin") Sign in
-      main
-        section
-          p You need to sign in first.
+extends ../layout
+block header
+  a.signin(href="/signin") Sign in
+block content
+  p You need to sign in first.

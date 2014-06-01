@@ -1,17 +1,11 @@
-doctype html
-html
-  head
-    link(rel="stylesheet", href="/assets/styles.css")
-    title Sign In
-  body.template-signin
-    .page-wrapper
-      main
-        section.signin
-          if message
-            .error-message= message
-          form(method="post" action="/signin")
-            label(for="username") Username
-            input#username(name="username")
-            label(for="password") Password
-            input#password(type="password" name="password")
-            button Sign in
+extends ../layout-clean
+block content
+  section.signin
+    if message
+      .error-message= message
+    form(method="post" action="/signin")
+      label(for="username") Username
+      input#username(name="username")
+      label(for="password") Password
+      input#password(type="password" name="password")
+      button Sign in

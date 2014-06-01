@@ -1,13 +1,6 @@
-doctype html
-html
-  head
-    link(rel="stylesheet", href="/assets/styles.css")
-    title Sign In
-  body.template-index
-    .page-wrapper
-      header.page-header
-        a.signout(href="/signout") Sign out
-        .user-info Welcome, #{username}!
-      main
-        section
-          p Dashboard
+extends ../layout
+block header
+  a.signout(href="/signout") Sign out
+  .user-info Welcome, #{username}!
+block content
+  p Dashboard
