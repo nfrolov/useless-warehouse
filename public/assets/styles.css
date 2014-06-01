@@ -1,0 +1,81 @@
+body {
+  font: 14px sans-serif;
+  color: #222;
+}
+
+.page-wrapper {
+  margin: 30px auto;
+  max-width: 900px;
+}
+
+.page-header {
+  padding: 10px;
+  border-radius: 3px;
+  background: #f2f2f2;
+  overflow: hidden;
+  margin-bottom: 30px;
+  line-height: 30px;
+  height: 30px;
+}
+.page-header .user-info {
+  float: right;
+}
+.page-header .signout {
+  float: right;
+  border: 0;
+  border-radius: 3px;
+  padding: 0 10px;
+  color: #c34836;
+}
+.page-header .signin {
+  float: right;
+  border: 0;
+  border-radius: 3px;
+  padding: 0 10px;
+  color: #1f88be;
+}
+
+main {
+  padding: 0 10px;
+}
+
+.signin {
+  padding: 100px 0 0;
+  max-width: 230px;
+  margin: 0 auto;
+}
+.signin .error-message {
+  color: #c34836;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+.signin label {
+  display: block;
+  font-size: 14px;
+}
+.signin input,
+.signin button {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 2px 5px;
+}
+.signin input {
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: inset 0 2px 1px rgba(0, 0, 0, .2);
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+.signin button {
+  border: 0;
+  border-radius: 3px;
+  padding: 0 0 3px;
+  margin-top: 20px;
+  line-height: 35px;
+  background: #5bbd72;
+  color: #fff;
+  font-size: 15px;
+  box-shadow: inset 0 -3px 1px rgba(0, 0, 0, .2);
+}
