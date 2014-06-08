@@ -41,3 +41,12 @@ exports.find = function (cb) {
     cb(err, rows);
   });
 };
+
+exports.remove = function (id, cb) {
+  var queryString = '' +
+    ' DELETE FROM warehouse.category ' +
+    '  WHERE category_id = $1 ';
+  query(queryString, [id], function (err, rows, raw) {
+    cb(err, raw.rowCount);
+  });
+};

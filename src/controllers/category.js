@@ -73,6 +73,20 @@ exports.update = function (req, res) {
   }
 };
 
+exports.destroy = function (req, res) {
+  var id = req.params.id;
+
+  categoryDao.remove(id, function (err, removed) {
+    if (err) {
+      return res.send(500, err.toString());
+    }
+    if (!removed) {
+      return res.send(404, 'Category does not exist');
+    }
+    res.redirect('/categories');
+  });
+};
+
 function createCategory(params, id) {
   params = params || {};
   return {

@@ -17,5 +17,6 @@ module.exports = function (app) {
   app.post('/categories', controllers.category.create);
   app.get('/categories/:id/edit', controllers.category.edit);
   app.put('/categories/:id', controllers.category.update);
+  app.delete('/categories/:id', controllers.category.destroy);
 
 };
