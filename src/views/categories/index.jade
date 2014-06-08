@@ -1,0 +1,24 @@
+extends ../layout
+block content
+  h1
+    | Categories
+    a(href="/categories/new") Add new
+  table
+    thead: tr
+      th ID
+      th Name
+      th
+    tbody
+      each category in categories
+        tr
+          td= category.id
+          td= category.name
+          td
+            a.edit(href="/categories/" + category.id + "/edit") Edit
+            form(action="/categories/" + category.id, method="post")
+              input(type="hidden", name="_method", value="delete")
+              button.remove(type="submit") Remove
+      else
+        tr.message
+          td(colspan="3") No categories yet
+

@@ -12,4 +12,6 @@ module.exports = function (app) {
   app.post('/signin', controllers.auth.signin);
   app.get('/signout', controllers.auth.signout);
 
+  app.get('/categories', controllers.category.index);
+
 };
