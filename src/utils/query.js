@@ -5,8 +5,7 @@ module.exports = function (query, params, cb) {
     if (err) return done(), cb(err);
     client.query(query, params, function (err, result) {
       done();
-      if (err) return cb(err);
-      cb(null, result.rows || []);
+      cb(err, result.rows || [], result);
     });
   });
 };
