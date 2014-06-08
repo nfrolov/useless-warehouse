@@ -1,8 +1,6 @@
 exports.index = function (req, res) {
-  if (req.session.account_id) {
-    res.render('welcome/index', {
-      username: req.session.username
-    });
+  if (req.account.id) {
+    res.render('welcome/index');
   } else {
     res.render('welcome/index-noauth');
   }
