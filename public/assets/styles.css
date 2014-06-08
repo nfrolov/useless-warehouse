@@ -9,23 +9,13 @@ body {
 }
 
 .page-header {
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 3px;
   background: #f2f2f2;
   overflow: hidden;
   margin-bottom: 30px;
   line-height: 30px;
   height: 30px;
-}
-.page-header .user-info {
-  float: right;
-}
-.page-header .signout {
-  float: right;
-  border: 0;
-  border-radius: 3px;
-  padding: 0 10px;
-  color: #c34836;
 }
 .page-header .signin {
   float: right;
@@ -34,9 +24,31 @@ body {
   padding: 0 10px;
   color: #1f88be;
 }
+.page-header .page-nav {
+  float: left;
+}
+.page-nav ul {
+  margin: 0;
+  padding: 0;
+}
+.page-nav li {
+  float: left;
+  list-style: none;
+}
+.page-nav a {
+  text-transform: uppercase;
+  color: #222;
+}
+.page-header .user-info {
+  float: right;
+}
+.user-info .signout {
+  padding-left: 10px;
+  color: #c34836;
+}
 
 main {
-  padding: 0 10px;
+  padding: 0 20px;
 }
 
 .signin {

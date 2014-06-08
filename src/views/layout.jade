@@ -7,5 +7,10 @@ html
     .page-wrapper
       header.page-header
         block header
+          nav.page-nav
+            ul
+          .user-info
+            | Welcome, #{account.username}!
+            a.signout(href="/signout") Sign out
       main
         block content
