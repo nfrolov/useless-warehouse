@@ -1,0 +1,9 @@
+if errors && errors.length
+  .errors
+    ul
+      each error in errors
+        li= error
+fieldset
+  label
+    | Name
+    input(name="name" size=25 value=category.name)

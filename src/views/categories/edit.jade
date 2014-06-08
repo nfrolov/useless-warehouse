@@ -1,0 +1,9 @@
+extends ../layout
+block content
+  h1 Edit category
+  form(action="/categories/" + category.id, method="post")
+    input(type="hidden", name="_method", value="put")
+    input(type="hidden", name="id", value=category.id)
+    include form
+    fieldset
+      button Save changes
