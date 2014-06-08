@@ -2,6 +2,16 @@ var async = require('async'),
     accountDao = require('../daos/account'),
     bcrypt = require('bcrypt');
 
+exports.inject = function (req, res, next) {
+  req.account = res.locals.account = {
+    id: req.session.account_id,
+    username: req.session.username,
+    worker: 'worker' === req.session.role,
+    client: 'client' === req.session.role
+  };
+  next();
+};
+
 exports.form = function (req, res) {
   res.render('auth/signin');
 };

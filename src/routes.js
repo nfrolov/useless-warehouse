@@ -2,6 +2,8 @@ var controllers = require('./controllers');
 
 module.exports = function (app) {
 
+  app.use(controllers.auth.inject);
+
   app.get('/conninfo', controllers.utils.conninfo);
 
   app.get('/', controllers.welcome.index);
