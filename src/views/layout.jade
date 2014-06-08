@@ -9,7 +9,8 @@ html
         block header
           nav.page-nav
             ul
-              li: a(href="/categories") Categories
+              if account.worker
+                li: a(href="/categories") Categories
           .user-info
             | Welcome, #{account.username}!
             a.signout(href="/signout") Sign out

@@ -12,11 +12,20 @@ module.exports = function (app) {
   app.post('/signin', controllers.auth.signin);
   app.get('/signout', controllers.auth.signout);
 
-  app.get('/categories', controllers.category.index);
-  app.get('/categories/new', controllers.category.new);
-  app.post('/categories', controllers.category.create);
-  app.get('/categories/:id/edit', controllers.category.edit);
-  app.put('/categories/:id', controllers.category.update);
-  app.delete('/categories/:id', controllers.category.destroy);
+  app.get('/categories', workerOnly, controllers.category.index);
+  app.get('/categories/new', workerOnly, controllers.category.new);
+  app.post('/categories', workerOnly, controllers.category.create);
+  app.get('/categories/:id/edit', workerOnly, controllers.category.edit);
+  app.put('/categories/:id', workerOnly, controllers.category.update);
+  app.delete('/categories/:id', workerOnly, controllers.category.destroy);
 
 };
+
+function workerOnly(req, res, next) {
+  if (req.account.worker) {
+    next();
+  } else {
+    res.send(403, 'Access denied');
+    next('route');
+  }
+}
