@@ -1,11 +1,9 @@
 var async = require('async'),
     categoryDao  = require('../daos/category');
 
-exports.index = function (req, res) {
+exports.index = function (req, res, next) {
   categoryDao.find(function (err, categories) {
-    if (err) {
-      return res.send(500, err.toString());
-    }
+    if (err) return next(err);
     res.render('categories/index', {
       categories: categories
     });
@@ -18,7 +16,7 @@ exports.new = function (req, res) {
   });
 };
 
-exports.create = function (req, res) {
+exports.create = function (req, res, next) {
   var category = createCategory(req.body),
       errors = validateCategory(category);
 
@@ -29,21 +27,17 @@ exports.create = function (req, res) {
     });
   } else {
     categoryDao.create(category, function (err) {
-      if (err) {
-        return res.send(500, err.toString());
-      }
+      if (err) return next(err);
       res.redirect('/categories');
     });
   }
 };
 
-exports.edit = function (req, res) {
+exports.edit = function (req, res, next) {
   var id = req.params.id;
 
   categoryDao.get(id, function (err, category) {
-    if (err) {
-      return res.send(500, err.toString());
-    }
+    if (err) return next(err);
     if (!category) {
       res.send(404, 'Category does not exist');
     }
@@ -53,7 +47,7 @@ exports.edit = function (req, res) {
   });
 };
 
-exports.update = function (req, res) {
+exports.update = function (req, res, next) {
   var id = req.params.id,
       category = createCategory(req.body, id),
       errors = validateCategory(category);
@@ -65,21 +59,17 @@ exports.update = function (req, res) {
     });
   } else {
     categoryDao.update(id, category, function (err) {
-      if (err) {
-        return res.end(500, err.toString());
-      }
+      if (err) return next(err);
       res.redirect('/categories');
     });
   }
 };
 
-exports.destroy = function (req, res) {
+exports.destroy = function (req, res, next) {
   var id = req.params.id;
 
   categoryDao.remove(id, function (err, removed) {
-    if (err) {
-      return res.send(500, err.toString());
-    }
+    if (err) return next(err);
     if (!removed) {
       return res.send(404, 'Category does not exist');
     }

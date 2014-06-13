@@ -1,7 +1,7 @@
 var pg = require('pg'),
     async = require('async');
 
-exports.conninfo = function (req, res) {
+exports.conninfo = function (req, res, next) {
   var client = new pg.Client(process.env.DATABASE_URL);
   async.waterfall([
     function (cb) {
@@ -49,9 +49,7 @@ exports.conninfo = function (req, res) {
     }
   ], function (err, tables) {
     client.end();
-    if (err) {
-      return res.send(500, err.toString());
-    }
+    if (err) return next(err);
     res.render('utils/conninfo', {
       tables: tables
     });

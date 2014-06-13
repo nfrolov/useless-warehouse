@@ -29,4 +29,8 @@ app.use(express.static(__dirname + '/../public'));
 
 routes(app);
 
+app.use(function (err, req, res, next) {
+  res.status(500).render('error/internal', {error: err});
+});
+
 app.listen(process.env.PORT || 5000);
