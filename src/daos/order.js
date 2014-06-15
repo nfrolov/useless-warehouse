@@ -85,6 +85,15 @@ exports.find = function (conditions, cb) {
   });
 };
 
+exports.ship = function (id, cb) {
+  var queryString = '' +
+    ' UPDATE warehouse.order ' +
+    '    SET shipped_at = now() ' +
+    '  WHERE shipped_at IS NULL ' +
+    '    AND order_id = $1 ';
+  query(queryString, [id], cb);
+};
+
 function buildWhere(conditions, params) {
   var where = [], field;
 

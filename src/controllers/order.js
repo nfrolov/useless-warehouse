@@ -5,6 +5,15 @@ var async = require('async'),
 
 var router = express.Router();
 
+router.get('/orders', workerOnly, function (req, res, next) {
+  orderDao.find(function (err, orders) {
+    if (err) return next(err);
+    res.render('orders/index', {
+      orders: orders
+    });
+  });
+});
+
 router.param('id', function (req, res, next, id) {
   orderDao.get(id, function (err, order) {
     if (err) return next(err);
@@ -13,6 +22,13 @@ router.param('id', function (req, res, next, id) {
     }
     req.order = order;
     next();
+  });
+});
+
+router.post('/orders/:id/ship', workerOnly, function (req, res, next) {
+  orderDao.ship(req.order.id, function (err) {
+    if (err) return next(err);
+    res.redirect('/orders');
   });
 });
 
@@ -30,6 +46,13 @@ router.get('/orders/:id', ownerOrWorker, function (req, res, next) {
     order: order
   });
 });
+
+function workerOnly(req, res, next) {
+  if (req.account && req.account.worker) {
+    return next();
+  }
+  res.send(403, 'Access denied');
+}
 
 function ownerOrWorker(req, res, next) {
   var acc = req.account;
