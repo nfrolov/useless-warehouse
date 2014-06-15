@@ -110,8 +110,10 @@ tr {
   padding: 5px 5px 0 5px;
 }
 th {
-  border-bottom: 2px solid #888;
   text-align: left;
+}
+thead th {
+  border-bottom: 2px solid #888;
 }
 th:first-child {
   width: 50px;
@@ -120,7 +122,8 @@ th.small {
   width: 100px;
 }
 th:last-child {
-  width: 100px;
+  width: 0;
+  padding: 0;
 }
 td {
   border-bottom: 1px solid #ddd;
@@ -132,7 +135,7 @@ td {
 }
 td:last-child {
   text-align: right;
-  padding-right: 0;
+  padding: 0;
   white-space: nowrap;
 }
 td:last-child form {
@@ -147,6 +150,7 @@ td:last-child button {
   padding: 0;
   color: #555;
   cursor: pointer;
+  font-size: 100%;
 }
 td:last-child .remove {
   color: #c34836;
@@ -232,4 +236,19 @@ form .errors ul {
 }
 form .errors li {
   list-style: none;
+}
+
+dl {
+  margin: 20px 0;
+  overflow: hidden;
+}
+dl dt {
+  float: left;
+  clear: left;
+  margin-right: 1em;
+  font-weight: bold;
+}
+dl dd {
+  float: left;
+  margin-left: 0;
 }
