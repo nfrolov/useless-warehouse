@@ -31,3 +31,39 @@ exports.create = function (order, cb) {
     cb(err, order);
   });
 };
+
+exports.find = function (conditions, cb) {
+  if ('function' === typeof conditions) {
+    cb = conditions;
+    conditions = {};
+  }
+
+  var params = [];
+  var queryString = '' +
+    ' SELECT order_id id, client_id, ' +
+    '        created_at, sent_at, shipped_at, ' +
+    '        note ' +
+    '   FROM warehouse.order ';
+
+  queryString += buildWhere(conditions, params);
+  queryString += ' ORDER BY created_at DESC ';
+
+  query(queryString, params, function (err, rows) {
+    cb(err, rows);
+  });
+};
+
+function buildWhere(conditions, params) {
+  var where = [], field;
+
+  for (field in conditions) {
+    where.push(field + ' = $' + (params.length + 1));
+    params.push(conditions[field]);
+  }
+
+  if (where.length) {
+    return ' WHERE ' + where.join(' AND ');
+  }
+
+  return '';
+}

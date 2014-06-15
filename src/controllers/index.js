@@ -4,5 +4,6 @@ module.exports = {
   auth: require('./auth'),
   category: require('./category'),
   product: require('./product'),
-  store: require('./store')
+  store: require('./store'),
+  profile: require('./profile')
 };

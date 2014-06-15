@@ -1,0 +1,20 @@
+extends ../layout
+block content
+  h1 My orders
+  table
+    thead: tr
+      th ID
+      th Created
+      th Shipped
+      th
+    tbody
+      each order in orders
+        tr
+          td= order.id
+          td= moment(order.created_at).format('D MMMM YYYY H:mm')
+          td= order.shipped_at && moment(order.shipped_at).format('D MMMM YYYY H:mm')
+          td
+            a.edit(href="/orders/#{order.id}") View
+      else
+        tr.message
+          td(colspan="4") No orders yet

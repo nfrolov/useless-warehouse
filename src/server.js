@@ -13,6 +13,7 @@ app.enable('strict routing');
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
+app.locals.moment = require('moment');
 
 app.use(morgan('short'));
 app.use(cookieParser());

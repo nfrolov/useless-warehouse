@@ -27,6 +27,7 @@ module.exports = function (app) {
   app.delete('/products/:id', workerOnly, controllers.product.destroy);
 
   app.use(controllers.store.router);
+  app.use(controllers.profile.router);
 
 };
 
