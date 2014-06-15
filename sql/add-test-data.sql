@@ -17,6 +17,11 @@ insert into warehouse.client (client_id, name, credit_limit)
 insert into warehouse.category (category_id, name)
   values (1, 'Teleport'), (2, 'Perpetual motion');
 
+insert into warehouse.product (product_id, category_id, name, description, price, quantity)
+  values (1, 1, 'Enterprise Transporter', 'Invented in the early 22nd century by Dr. Emory Erickson.', 14990.00, 4),
+         (2, 2, 'Perpetual motion wheels', 'Perpetual motion wheels from a drawing of Leonardo da Vinci.', 139.00, 10),
+         (3, 2, 'Bhaskara Wheel', 'The first documented perpetual motion machines were described by the Indian author Bhaskara.', 59.00, 100);
 
 alter sequence warehouse.account_account_id_seq restart with 3;
 alter sequence warehouse.category_category_id_seq restart with 3;
+alter sequence warehouse.product_product_id_seq restart with 4;
