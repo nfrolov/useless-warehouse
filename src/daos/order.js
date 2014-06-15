@@ -32,6 +32,38 @@ exports.create = function (order, cb) {
   });
 };
 
+exports.get = function (id, cb) {
+  var selectOrderQuery = '' +
+    ' SELECT order_id id, client_id, ' +
+    '        created_at, sent_at, shipped_at, ' +
+    '        note ' +
+    '   FROM warehouse.order ' +
+    '  WHERE order_id = $1 ';
+  var selectOrderProductsQuery = '' +
+    ' SELECT op.product_id id, op.price, op.quantity, ' +
+    '        p.name ' +
+    '   FROM warehouse.order_product op ' +
+    '   JOIN warehouse.product p ON (p.product_id = op.product_id) ' +
+    '  WHERE order_id = $1 ';
+  var order;
+
+  async.waterfall([
+    function (cb) {
+      query(selectOrderQuery, [id], cb);
+    },
+    function (rows, raw, cb) {
+      order = rows[0];
+      query(selectOrderProductsQuery, [order.id], cb);
+    },
+    function (rows, raw, cb) {
+      order.products = rows;
+      cb();
+    }
+  ], function (err) {
+    cb(err, order);
+  });
+};
+
 exports.find = function (conditions, cb) {
   if ('function' === typeof conditions) {
     cb = conditions;

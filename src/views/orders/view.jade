@@ -1,0 +1,34 @@
+extends ../layout
+block content
+  h1 Order ##{order.id}
+  dl
+    dt Created
+    dd= moment(order.created_at).format('D MMMM YYYY H:mm')
+    dt Shipped
+    dd
+      if order.shipped_at
+        = moment(order.shipped_at).format('D MMMM YYYY H:mm')
+      else
+        | Not shipped
+  table
+    thead: tr
+      th ID
+      th Name
+      th.small Quantity
+      th.small Price
+      th.small Total price
+      th
+    tbody
+      each product in order.products
+        tr
+          td= product.id
+          td= product.name
+          td= product.quantity
+          td= product.price
+          td= product.total_price
+          td
+    tfoot
+      td
+      td(colspan="3") Total
+      td= order.total_price
+      td

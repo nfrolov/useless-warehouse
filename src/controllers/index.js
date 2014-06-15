@@ -5,5 +5,6 @@ module.exports = {
   category: require('./category'),
   product: require('./product'),
   store: require('./store'),
-  profile: require('./profile')
+  profile: require('./profile'),
+  order: require('./order')
 };
