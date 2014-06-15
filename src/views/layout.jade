@@ -12,6 +12,8 @@ html
               if account.worker
                 li: a(href="/categories") Categories
                 li: a(href="/products") Products
+              if account.client
+                li: a(href="/store") Store
           .user-info
             | Welcome, #{account.username}!
             a.signout(href="/signout") Sign out

@@ -50,13 +50,22 @@ exports.get = function (id, cb) {
   });
 };
 
-exports.find = function (cb) {
+exports.find = function (conditions, cb) {
+  if ('function' === typeof conditions) {
+    cb = conditions;
+    conditions = {};
+  }
+
+  var params = [];
   var queryString = '' +
     ' SELECT product_id id, category_id, name, description, ' +
     '        price, quantity ' +
-    '   FROM warehouse.product ' +
-    '  ORDER BY name ';
-  query(queryString, [], function (err, rows) {
+    '   FROM warehouse.product ';
+
+  queryString += buildWhere(conditions, params);
+  queryString += ' ORDER BY name ';
+
+  query(queryString, params, function (err, rows) {
     cb(err, rows);
   });
 };
@@ -69,3 +78,27 @@ exports.remove = function (id, cb) {
     cb(err, raw.rowCount);
   });
 };
+
+// FIXME extract
+function buildWhere (conditions, params) {
+  var where = [], field, value;
+
+  for (field in conditions) {
+    value = conditions[field];
+    if ('id' === field) {
+      field = 'product_id';
+    }
+    if (Array.isArray(value)) {
+      where.push(field + ' IN (' + value.map(Number).join(', ') + ')');
+    } else {
+      where.push(field + ' = $' + (params.length + 1));
+      params.push(value);
+    }
+  }
+
+  if (where.length) {
+    return ' WHERE ' + where.join(' AND ');
+  }
+
+  return '';
+}

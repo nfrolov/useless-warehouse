@@ -1,0 +1,29 @@
+extends ../layout
+block content
+  h1 Basket
+  table
+    thead: tr
+      th ID
+      th Name
+      th.small Quantity
+      th.small Price
+      th.small Total price
+      th
+    tbody
+      each product in basket
+        tr
+          td= product.id
+          td= product.name
+          td= product.quantity
+          td= product.price
+          td= product.total_price
+          td
+            form(action="/store/basket", method="post")
+              input(type="hidden", name="_method", value="patch")
+              input(type="hidden", name="product_id", value=product.id)
+              input(type="hidden", name="quantity", value=-product.quantity)
+              button.remove(type="submit") Remove
+      else
+        tr.message
+          td(colspan="6") Basket is empty
+

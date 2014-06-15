@@ -3,5 +3,6 @@ module.exports = {
   welcome: require('./welcome'),
   auth: require('./auth'),
   category: require('./category'),
-  product: require('./product')
+  product: require('./product'),
+  store: require('./store')
 };

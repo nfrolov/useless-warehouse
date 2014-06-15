@@ -26,6 +26,8 @@ module.exports = function (app) {
   app.put('/products/:id', workerOnly, controllers.product.update);
   app.delete('/products/:id', workerOnly, controllers.product.destroy);
 
+  app.use(controllers.store.router);
+
 };
 
 function workerOnly(req, res, next) {
