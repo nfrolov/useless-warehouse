@@ -19,6 +19,13 @@ module.exports = function (app) {
   app.put('/categories/:id', workerOnly, controllers.category.update);
   app.delete('/categories/:id', workerOnly, controllers.category.destroy);
 
+  app.get('/products', workerOnly, controllers.product.index);
+  app.get('/products/new', workerOnly, controllers.product.new);
+  app.post('/products', workerOnly, controllers.product.create);
+  app.get('/products/:id/edit', workerOnly, controllers.product.edit);
+  app.put('/products/:id', workerOnly, controllers.product.update);
+  app.delete('/products/:id', workerOnly, controllers.product.destroy);
+
 };
 
 function workerOnly(req, res, next) {

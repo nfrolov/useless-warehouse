@@ -11,6 +11,7 @@ html
             ul
               if account.worker
                 li: a(href="/categories") Categories
+                li: a(href="/products") Products
           .user-info
             | Welcome, #{account.username}!
             a.signout(href="/signout") Sign out

@@ -1,0 +1,26 @@
+extends ../layout
+block content
+  h1
+    | Products
+    a(href="/products/new") Add new
+  table
+    thead: tr
+      th ID
+      th Name
+      th.small Quantity
+      th
+    tbody
+      each product in products
+        tr
+          td= product.id
+          td= product.name
+          td= product.quantity
+          td
+            a.edit(href="/products/" + product.id + "/edit") Edit
+            form(action="/products/" + product.id, method="post")
+              input(type="hidden", name="_method", value="delete")
+              button.remove(type="submit") Remove
+      else
+        tr.message
+          td(colspan="4") No products yet
+

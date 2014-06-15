@@ -1,0 +1,7 @@
+extends ../layout
+block content
+  h1 Add new product
+  form(action="/products", method="post")
+    include form
+    fieldset
+      button Add

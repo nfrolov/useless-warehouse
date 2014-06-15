@@ -2,5 +2,6 @@ module.exports = {
   utils: require('./utils'),
   welcome: require('./welcome'),
   auth: require('./auth'),
-  category: require('./category')
+  category: require('./category'),
+  product: require('./product')
 };

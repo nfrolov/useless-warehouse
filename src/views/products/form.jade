@@ -1,0 +1,22 @@
+if errors && errors.length
+  .errors
+    ul
+      each error in errors
+        li= error
+fieldset
+  label Category
+    select(name="category_id")
+      option(value="")
+      each category in categories
+        option(value=category.id, selected=category.id === product.category_id)
+          = category.name
+fieldset
+  label Name
+    input(name="name", size=25, value=product.name)
+  label Description
+    textarea(name="description", rows=3, cols=30)= product.description
+fieldset
+  label Price
+    input(name="price", size=8, value=product.price)
+  label Quantity
+    input(name="quantity", size=5, value=product.quantity)
