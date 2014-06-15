@@ -34,6 +34,7 @@ body {
 .page-nav li {
   float: left;
   list-style: none;
+  margin-right: 20px;
 }
 .page-nav a {
   text-transform: uppercase;
