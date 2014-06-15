@@ -26,4 +26,7 @@ block content
       else
         tr.message
           td(colspan="6") Basket is empty
-
+  if basket.length
+    form.order-form(action="/store/order", method="post")
+      fieldset
+        button(type="submit") Make order

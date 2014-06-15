@@ -1,6 +1,8 @@
 var async = require('async'),
+    _ = require('lodash'),
     express = require('express'),
-    productDao = require('../daos/product');
+    productDao = require('../daos/product'),
+    orderDao = require('../daos/order');
 
 var router = express.Router();
 
@@ -62,6 +64,22 @@ router.patch('/store/basket', clientOnly, function (req, res, next) {
     req.session.basket = basket;
 
     res.redirect('/store/basket');
+  });
+});
+
+router.post('/store/order', clientOnly, function (req, res, next) {
+  var basket = req.session.basket || {},
+      order;
+
+  order = {
+    client_id: req.account.id,
+    products: _.values(basket)
+  };
+
+  orderDao.create(order, function (err, order) {
+    if (err) return next(err);
+    req.session.basket = {};
+    res.redirect('/orders/' + order.id);
   });
 });
 
