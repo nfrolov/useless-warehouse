@@ -116,8 +116,11 @@ th {
 th:first-child {
   width: 50px;
 }
+th.small {
+  width: 100px;
+}
 th:last-child {
-  width: 150px;
+  width: 100px;
 }
 td {
   border-bottom: 1px solid #ddd;
