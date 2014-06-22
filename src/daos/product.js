@@ -79,6 +79,19 @@ exports.remove = function (id, cb) {
   });
 };
 
+exports.substractQuantity = function (id, amount, cb) {
+  var queryString = '' +
+    '    UPDATE warehouse.product ' +
+    '       SET quantity = quantity - $2 ' +
+    '     WHERE product_id = $1 ' +
+    ' RETURNING quantity ';
+  query(queryString, [id, amount], function (err, rows, raw) {
+    if (err) return cb(err);
+    var quantity = rows[0] && rows[0].quantity;
+    cb(err, quantity);
+  });
+};
+
 // FIXME extract
 function buildWhere (conditions, params) {
   var where = [], field, value;

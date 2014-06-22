@@ -69,15 +69,22 @@ router.patch('/store/basket', allow.client(), function (req, res, next) {
 });
 
 router.post('/store/order', allow.client(), function (req, res, next) {
-  var basket = req.session.basket || {},
-      order;
-
-  order = {
+  var basket = req.session.basket || {};
+  var order = {
     client_id: req.account.id,
     products: _.values(basket)
   };
 
-  orderDao.create(order, function (err, order) {
+  async.waterfall([
+    function (cb) {
+      orderDao.create(order, cb);
+    },
+    function (order, cb) {
+      async.each(order.products, function (prod, cb) {
+        productDao.substractQuantity(prod.id, prod.quantity, cb);
+      }, cb);
+    }
+  ], function (err) {
     if (err) return next(err);
     req.session.basket = {};
     res.redirect('/orders/' + order.id);

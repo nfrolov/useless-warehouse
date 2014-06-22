@@ -50,7 +50,7 @@ create table warehouse.order_product (
     references warehouse.order on update cascade on delete cascade,
   product_id integer not null
     references warehouse.product on update cascade on delete restrict,
-  quantity integer not null check (quantity > 0),
+  quantity integer not null check,
   price numeric(10, 2) not null check (price >= 0.0)
 );
 

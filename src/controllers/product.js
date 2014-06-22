@@ -110,7 +110,7 @@ function createProduct(params, id) {
     name: params.name || "",
     description: params.description || "",
     price: params.price && +params.price || null,
-    quantity: params.quantity && +params.quantity || null
+    quantity: params.quantity && +params.quantity
   };
 }
 
@@ -135,11 +135,8 @@ function validateProduct(prod) {
   if (prod.price < 0) {
     errors.push("Price should be positive");
   }
-  if (!prod.quantity) {
+  if (!prod.quantity && prod.quantity !== 0) {
     errors.push("Quantity is required");
-  }
-  if (prod.quantity < 0) {
-    errors.push("Quantity should be positive");
   }
 
   return errors;
