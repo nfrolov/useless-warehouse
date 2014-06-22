@@ -13,9 +13,11 @@ html
                 li: a(href="/categories") Categories
                 li: a(href="/products") Products
                 li: a(href="/orders") Orders
+                li: a(href="/invoices") Invoices
               if account.client
                 li: a(href="/store") Store
                 li: a(href="/profile/orders") Orders
+                li: a(href="/profile/invoices") Invoices
           .user-info
             | Welcome, #{account.username}!
             a.signout(href="/signout") Sign out

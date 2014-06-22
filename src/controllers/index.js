@@ -6,5 +6,6 @@ module.exports = {
   product: require('./product'),
   store: require('./store'),
   profile: require('./profile'),
-  order: require('./order')
+  order: require('./order'),
+  invoice: require('./invoice')
 };

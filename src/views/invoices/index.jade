@@ -1,0 +1,27 @@
+extends ../layout
+block content
+  h1 Invoices
+  table
+    thead: tr
+      th ID
+      th Order ID
+      th Client ID
+      th Amount
+      th Due date
+      th Paid
+      th
+    tbody
+      each invoice in invoices
+        tr(class=(invoice.overdue ? 'error' : ''))
+          td= invoice.id
+          td= invoice.order_id
+          td= invoice.client_id
+          td= invoice.amount
+          td= moment(invoice.due_date).format('D MMMM YYYY')
+          td= invoice.paid_at && moment(invoice.paid_at).format('D MMMM YYYY H:mm')
+          td
+            form(action="/invoices/#{invoice.id}/paid", method="post")
+              button.ship(type="submit", disabled=(invoice.paid_at !== null)) Mark as paid
+      else
+        tr.message
+          td(colspan="7") No invoices yet

@@ -34,33 +34,32 @@ exports.create = function (order, cb) {
 
 exports.get = function (id, cb) {
   var selectOrderQuery = '' +
-    ' SELECT order_id id, client_id, ' +
-    '        created_at, sent_at, shipped_at, ' +
-    '        note ' +
-    '   FROM warehouse.order ' +
-    '  WHERE order_id = $1 ';
+    ' SELECT o.order_id id, o.client_id, ' +
+    '        o.created_at, o.sent_at, o.shipped_at, ' +
+    '        o.note, ' +
+    '        ( SELECT SUM(op.price * op.quantity) ' +
+    '            FROM warehouse.order_product op ' +
+    '           WHERE op.order_id = o.order_id ) total_price ' +
+    '   FROM warehouse.order o ' +
+    '  WHERE o.order_id = $1 ';
   var selectOrderProductsQuery = '' +
     ' SELECT op.product_id id, op.price, op.quantity, ' +
-    '        p.name ' +
+    '        p.name, op.price * op.quantity total_price ' +
     '   FROM warehouse.order_product op ' +
     '   JOIN warehouse.product p ON (p.product_id = op.product_id) ' +
-    '  WHERE order_id = $1 ';
-  var order;
+    '  WHERE op.order_id = $1 ';
 
-  async.waterfall([
-    function (cb) {
-      query(selectOrderQuery, [id], cb);
-    },
-    function (rows, raw, cb) {
-      order = rows[0];
-      query(selectOrderProductsQuery, [order.id], cb);
-    },
-    function (rows, raw, cb) {
-      order.products = rows;
-      cb();
-    }
-  ], function (err) {
-    cb(err, order);
+  query(selectOrderQuery, [id], function (err, rows) {
+    if (err) return cb(err);
+    if (!rows[0]) return cb();
+
+    var order = rows[0];
+
+    query(selectOrderProductsQuery, [order.id], function (err, rows) {
+      if (err) return cb(err);
+      order.products = rows || [];
+      cb(null, order);
+    });
   });
 };
 
@@ -91,7 +90,10 @@ exports.ship = function (id, cb) {
     '    SET shipped_at = now() ' +
     '  WHERE shipped_at IS NULL ' +
     '    AND order_id = $1 ';
-  query(queryString, [id], cb);
+  query(queryString, [id], function (err, rows, raw) {
+    var shipped = raw.rowCount > 0;
+    cb(err, shipped);
+  });
 };
 
 function buildWhere(conditions, params) {

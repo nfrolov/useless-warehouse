@@ -1,7 +1,9 @@
 var async = require('async'),
     express = require('express'),
+    moment = require('moment'),
     productDao = require('../daos/product'),
-    orderDao  = require('../daos/order');
+    orderDao  = require('../daos/order'),
+    invoiceDao = require('../daos/invoice');
 
 var router = express.Router();
 
@@ -26,24 +28,26 @@ router.param('id', function (req, res, next, id) {
 });
 
 router.post('/orders/:id/ship', workerOnly, function (req, res, next) {
-  orderDao.ship(req.order.id, function (err) {
+  var order = req.order;
+
+  async.waterfall([
+    function (cb) {
+      orderDao.ship(order.id, cb);
+    },
+    function (shipped, cb) {
+      if (!shipped) return cb();
+      var invoice = newInvoiceForOrder(order);
+      invoiceDao.create(invoice, cb);
+    }
+  ], function (err) {
     if (err) return next(err);
     res.redirect('/orders');
   });
 });
 
 router.get('/orders/:id', ownerOrWorker, function (req, res, next) {
-  var order = req.order;
-
-  order.products.forEach(function (prod) {
-    prod.total_price = (prod.quantity * prod.price).toFixed(2);
-  });
-  order.total_price = order.products.reduce(function (acc, prod) {
-    return acc + Number(prod.total_price);
-  }, 0).toFixed(2);
-
   res.render('orders/view', {
-    order: order
+    order: req.order
   });
 });
 
@@ -60,6 +64,14 @@ function ownerOrWorker(req, res, next) {
     return next();
   }
   res.send(403, 'Access denied');
+}
+
+function newInvoiceForOrder(order) {
+  return {
+    order_id: order.id,
+    due_date: moment().add('days', 7).toDate(),
+    amount: order.total_price
+  };
 }
 
 exports.router = router;

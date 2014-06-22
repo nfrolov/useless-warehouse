@@ -1,0 +1,23 @@
+extends ../layout
+block content
+  h1 My Invoices
+  table
+    thead: tr
+      th ID
+      th Order ID
+      th Amount
+      th Due date
+      th Paid
+      th
+    tbody
+      each invoice in invoices
+        tr(class=(invoice.overdue ? 'error' : ''))
+          td= invoice.id
+          td= invoice.order_id
+          td= invoice.amount
+          td= moment(invoice.due_date).format('D MMMM YYYY')
+          td= invoice.paid_at && moment(invoice.paid_at).format('D MMMM YYYY H:mm')
+          td
+      else
+        tr.message
+          td(colspan="6") No invoices yet
