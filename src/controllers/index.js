@@ -7,5 +7,6 @@ module.exports = {
   store: require('./store'),
   profile: require('./profile'),
   order: require('./order'),
-  invoice: require('./invoice')
+  invoice: require('./invoice'),
+  client: require('./client')
 };

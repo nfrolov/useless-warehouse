@@ -1,0 +1,22 @@
+extends ../layout
+block content
+  h1 Clients
+  table
+    thead: tr
+      th ID
+      th Username
+      th Name
+      th Credit limit
+      th
+    tbody
+      each client in clients
+        tr
+          td= client.id
+          td= client.username
+          td= client.name
+          td= client.credit_limit === null ? 'not set' : client.credit_limit
+          td
+            a.edit(href="/clients/#{client.id}/edit") Edit
+      else
+        tr.message
+          td(colspan="5") No clients yet

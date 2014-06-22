@@ -30,6 +30,7 @@ module.exports = function (app) {
   app.use(controllers.profile.router);
   app.use(controllers.order.router);
   app.use(controllers.invoice.router);
+  app.use(controllers.client.router);
 
 };
 
