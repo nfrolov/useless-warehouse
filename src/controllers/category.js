@@ -1,22 +1,25 @@
 var async = require('async'),
+    express = require('express'),
     categoryDao  = require('../daos/category');
 
-exports.index = function (req, res, next) {
+var router = express.Router();
+
+router.get('/categories', workerOnly, function (req, res, next) {
   categoryDao.find(function (err, categories) {
     if (err) return next(err);
     res.render('categories/index', {
       categories: categories
     });
   });
-};
+});
 
-exports.new = function (req, res) {
+router.get('/categories/new', workerOnly, function (req, res) {
   res.render('categories/new', {
     category: createCategory()
   });
-};
+});
 
-exports.create = function (req, res, next) {
+router.post('/categories', workerOnly, function (req, res, next) {
   var category = createCategory(req.body),
       errors = validateCategory(category);
 
@@ -31,23 +34,23 @@ exports.create = function (req, res, next) {
       res.redirect('/categories');
     });
   }
-};
+});
 
-exports.edit = function (req, res, next) {
+router.get('/categories/:id/edit', workerOnly, function (req, res, next) {
   var id = req.params.id;
 
   categoryDao.get(id, function (err, category) {
     if (err) return next(err);
     if (!category) {
-      res.send(404, 'Category does not exist');
+      return res.send(404, 'Category does not exist');
     }
     res.render('categories/edit', {
       category: category
     });
   });
-};
+});
 
-exports.update = function (req, res, next) {
+router.put('/categories/:id', workerOnly, function (req, res, next) {
   var id = req.params.id,
       category = createCategory(req.body, id),
       errors = validateCategory(category);
@@ -63,9 +66,9 @@ exports.update = function (req, res, next) {
       res.redirect('/categories');
     });
   }
-};
+});
 
-exports.destroy = function (req, res, next) {
+router.delete('/categories/:id', workerOnly, function (req, res, next) {
   var id = req.params.id;
 
   categoryDao.remove(id, function (err, removed) {
@@ -75,7 +78,7 @@ exports.destroy = function (req, res, next) {
     }
     res.redirect('/categories');
   });
-};
+});
 
 function createCategory(params, id) {
   params = params || {};
@@ -97,3 +100,12 @@ function validateCategory(cat) {
 
   return errors;
 }
+
+function workerOnly(req, res, next) {
+  if (req.account && req.account.worker) {
+    return next();
+  }
+  res.send(403, 'Access denied');
+}
+
+exports.router = router;
