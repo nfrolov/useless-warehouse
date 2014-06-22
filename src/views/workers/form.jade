@@ -1,0 +1,13 @@
+if errors && errors.length
+  .errors
+    ul
+      each error in errors
+        li= error
+fieldset
+  label Username
+    input(name="username", size=15, value=worker.username)
+  label Password
+    input(type="password", name="password", size=15, value='')
+fieldset
+  label Name
+    input(name="name", size=20, value=worker.name)

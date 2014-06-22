@@ -1,0 +1,20 @@
+extends ../layout
+block content
+  h1 Workers
+  table
+    thead: tr
+      th ID
+      th Username
+      th Name
+      th
+    tbody
+      each worker in workers
+        tr
+          td= worker.id
+          td= worker.username
+          td= worker.name
+          td
+            a.edit(href="/workers/#{worker.id}/edit") Edit
+      else
+        tr.message
+          td(colspan="4") No workers yet

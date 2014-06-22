@@ -8,5 +8,6 @@ module.exports = {
   profile: require('./profile'),
   order: require('./order'),
   invoice: require('./invoice'),
-  client: require('./client')
+  client: require('./client'),
+  worker: require('./worker')
 };

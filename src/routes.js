@@ -31,6 +31,7 @@ module.exports = function (app) {
   app.use(controllers.order.router);
   app.use(controllers.invoice.router);
   app.use(controllers.client.router);
+  app.use(controllers.worker.router);
 
 };
 

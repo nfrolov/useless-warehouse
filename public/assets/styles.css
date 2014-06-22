@@ -155,12 +155,12 @@ td:last-child button {
   cursor: pointer;
   font-size: 100%;
 }
+td:last-child .remove {
+  color: #c34836;
+}
 td:last-child :disabled {
   color: #aaa;
   cursor: default;
-}
-td:last-child .remove {
-  color: #c34836;
 }
 td:last-child .quantity {
   display: inline-block;
