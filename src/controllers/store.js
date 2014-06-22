@@ -1,12 +1,13 @@
 var async = require('async'),
     _ = require('lodash'),
     express = require('express'),
+    allow = require('../utils/allow'),
     productDao = require('../daos/product'),
     orderDao = require('../daos/order');
 
 var router = express.Router();
 
-router.get('/store', clientOnly, function (req, res, next) {
+router.get('/store', allow.client(), function (req, res, next) {
   productDao.find(function (err, products) {
     if (err) return next(err);
     res.render('store/index', {
@@ -15,7 +16,7 @@ router.get('/store', clientOnly, function (req, res, next) {
   });
 });
 
-router.get('/store/basket', clientOnly, function (req, res, next) {
+router.get('/store/basket', allow.client(), function (req, res, next) {
   var basket = req.session.basket || {};
 
   async.waterfall([
@@ -39,7 +40,7 @@ router.get('/store/basket', clientOnly, function (req, res, next) {
   });
 });
 
-router.patch('/store/basket', clientOnly, function (req, res, next) {
+router.patch('/store/basket', allow.client(), function (req, res, next) {
   var product_id = req.body.product_id,
       quantity = Number(req.body.quantity);
 
@@ -67,7 +68,7 @@ router.patch('/store/basket', clientOnly, function (req, res, next) {
   });
 });
 
-router.post('/store/order', clientOnly, function (req, res, next) {
+router.post('/store/order', allow.client(), function (req, res, next) {
   var basket = req.session.basket || {},
       order;
 
@@ -82,12 +83,5 @@ router.post('/store/order', clientOnly, function (req, res, next) {
     res.redirect('/orders/' + order.id);
   });
 });
-
-function clientOnly(req, res, next) {
-  if (req.account && req.account.client) {
-    return next();
-  }
-  res.send(403, 'Access denied');
-}
 
 exports.router = router;

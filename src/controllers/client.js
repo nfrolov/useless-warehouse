@@ -2,11 +2,12 @@ var async = require('async'),
     express = require('express'),
     moment = require('moment'),
     bcrypt = require('bcrypt'),
+    allow = require('../utils/allow'),
     clientDao = require('../daos/client');
 
 var router = express.Router();
 
-router.get('/clients', workerOnly, function (req, res, next) {
+router.get('/clients', allow.worker(), function (req, res, next) {
   clientDao.findAll(function (err, clients) {
     if (err) return next(err);
     res.render('clients/index', {
@@ -15,7 +16,7 @@ router.get('/clients', workerOnly, function (req, res, next) {
   });
 });
 
-router.get('/clients/:id/edit', workerOnly, function (req, res, next) {
+router.get('/clients/:id/edit', allow.worker(), function (req, res, next) {
   var id = req.params.id;
   clientDao.get(id, function (err, client) {
     if (err) return next(err);
@@ -28,7 +29,7 @@ router.get('/clients/:id/edit', workerOnly, function (req, res, next) {
   });
 });
 
-router.put('/clients/:id', workerOnly, function (req, res, next) {
+router.put('/clients/:id', allow.worker(), function (req, res, next) {
   var id = req.params.id,
       client = createClient(req.body, id),
       errors = validateClient(client);
@@ -79,13 +80,6 @@ function validateClient(client) {
   }
 
   return errors;
-}
-
-function workerOnly(req, res, next) {
-  if (req.account && req.account.worker) {
-    return next();
-  }
-  res.send(403, 'Access denied');
 }
 
 exports.router = router;

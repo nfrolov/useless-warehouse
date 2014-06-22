@@ -1,10 +1,11 @@
 var async = require('async'),
     express = require('express'),
+    allow = require('../utils/allow'),
     categoryDao  = require('../daos/category');
 
 var router = express.Router();
 
-router.get('/categories', workerOnly, function (req, res, next) {
+router.get('/categories', allow.worker(), function (req, res, next) {
   categoryDao.find(function (err, categories) {
     if (err) return next(err);
     res.render('categories/index', {
@@ -13,13 +14,13 @@ router.get('/categories', workerOnly, function (req, res, next) {
   });
 });
 
-router.get('/categories/new', workerOnly, function (req, res) {
+router.get('/categories/new', allow.worker(), function (req, res) {
   res.render('categories/new', {
     category: createCategory()
   });
 });
 
-router.post('/categories', workerOnly, function (req, res, next) {
+router.post('/categories', allow.worker(), function (req, res, next) {
   var category = createCategory(req.body),
       errors = validateCategory(category);
 
@@ -36,7 +37,7 @@ router.post('/categories', workerOnly, function (req, res, next) {
   }
 });
 
-router.get('/categories/:id/edit', workerOnly, function (req, res, next) {
+router.get('/categories/:id/edit', allow.worker(), function (req, res, next) {
   var id = req.params.id;
 
   categoryDao.get(id, function (err, category) {
@@ -50,7 +51,7 @@ router.get('/categories/:id/edit', workerOnly, function (req, res, next) {
   });
 });
 
-router.put('/categories/:id', workerOnly, function (req, res, next) {
+router.put('/categories/:id', allow.worker(), function (req, res, next) {
   var id = req.params.id,
       category = createCategory(req.body, id),
       errors = validateCategory(category);
@@ -68,7 +69,7 @@ router.put('/categories/:id', workerOnly, function (req, res, next) {
   }
 });
 
-router.delete('/categories/:id', workerOnly, function (req, res, next) {
+router.delete('/categories/:id', allow.worker(), function (req, res, next) {
   var id = req.params.id;
 
   categoryDao.remove(id, function (err, removed) {
@@ -99,13 +100,6 @@ function validateCategory(cat) {
   }
 
   return errors;
-}
-
-function workerOnly(req, res, next) {
-  if (req.account && req.account.worker) {
-    return next();
-  }
-  res.send(403, 'Access denied');
 }
 
 exports.router = router;

@@ -1,11 +1,12 @@
 var async = require('async'),
     express = require('express'),
+    allow = require('../utils/allow'),
     productDao = require('../daos/product'),
     categoryDao  = require('../daos/category');
 
 var router = express.Router();
 
-router.get('/products', workerOnly, function (req, res, next) {
+router.get('/products', allow.worker(), function (req, res, next) {
   productDao.find(function (err, products) {
     if (err) return next(err);
     res.render('products/index', {
@@ -14,7 +15,7 @@ router.get('/products', workerOnly, function (req, res, next) {
   });
 });
 
-router.get('/products/new', workerOnly, function (req, res) {
+router.get('/products/new', allow.worker(), function (req, res) {
   categoryDao.find(function (err, categories) {
     if (err) return next(err);
     res.render('products/new', {
@@ -24,7 +25,7 @@ router.get('/products/new', workerOnly, function (req, res) {
   });
 });
 
-router.post('/products', workerOnly, function (req, res, next) {
+router.post('/products', allow.worker(), function (req, res, next) {
   var product = createProduct(req.body),
       errors = validateProduct(product);
 
@@ -45,7 +46,7 @@ router.post('/products', workerOnly, function (req, res, next) {
   }
 });
 
-router.get('/products/:id/edit', workerOnly, function (req, res, next) {
+router.get('/products/:id/edit', allow.worker(), function (req, res, next) {
   var id = req.params.id;
 
   async.waterfall([
@@ -67,7 +68,7 @@ router.get('/products/:id/edit', workerOnly, function (req, res, next) {
   });
 });
 
-router.put('/products/:id', workerOnly, function (req, res, next) {
+router.put('/products/:id', allow.worker(), function (req, res, next) {
   var id = req.params.id,
       product = createProduct(req.body, id),
       errors = validateProduct(product);
@@ -89,7 +90,7 @@ router.put('/products/:id', workerOnly, function (req, res, next) {
   }
 });
 
-router.delete('/products/:id', workerOnly, function (req, res, next) {
+router.delete('/products/:id', allow.worker(), function (req, res, next) {
   var id = req.params.id;
 
   productDao.remove(id, function (err, removed) {
@@ -142,13 +143,6 @@ function validateProduct(prod) {
   }
 
   return errors;
-}
-
-function workerOnly(req, res, next) {
-  if (req.account && req.account.worker) {
-    return next();
-  }
-  res.send(403, 'Access denied');
 }
 
 exports.router = router;
