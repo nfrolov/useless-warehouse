@@ -4,8 +4,7 @@ module.exports = function (app) {
 
   app.use(controllers.auth.inject);
 
-  app.get('/conninfo', controllers.utils.conninfo);
-
+  app.use(controllers.utils.router);
   app.use(controllers.welcome.router);
   app.use(controllers.auth.router);
   app.use(controllers.category.router);

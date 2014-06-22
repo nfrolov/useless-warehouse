@@ -1,7 +1,10 @@
 var pg = require('pg'),
-    async = require('async');
+    async = require('async'),
+    express = require('express');
 
-exports.conninfo = function (req, res, next) {
+var router = express.Router();
+
+router.get('/conninfo', function (req, res, next) {
   var client = new pg.Client(process.env.DATABASE_URL);
   async.waterfall([
     function (cb) {
@@ -54,4 +57,6 @@ exports.conninfo = function (req, res, next) {
       tables: tables
     });
   });
-};
+});
+
+exports.router = router;
