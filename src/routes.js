@@ -6,8 +6,7 @@ module.exports = function (app) {
 
   app.get('/conninfo', controllers.utils.conninfo);
 
-  app.get('/', controllers.welcome.index);
-
+  app.use(controllers.welcome.router);
   app.use(controllers.auth.router);
   app.use(controllers.category.router);
   app.use(controllers.product.router);
