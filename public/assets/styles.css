@@ -17,11 +17,7 @@ body {
   line-height: 30px;
   height: 30px;
 }
-.page-header .signin {
-  float: right;
-  border: 0;
-  border-radius: 3px;
-  padding: 0 10px;
+.page-header a {
   color: #1f88be;
 }
 .page-header .page-nav {
@@ -52,28 +48,34 @@ main {
   padding: 0 20px;
 }
 
-.signin {
+.signin,
+.signup {
   padding: 100px 0 0;
   max-width: 230px;
   margin: 0 auto;
 }
-.signin .error-message {
+.signin .error-message,
+.signup .error-message {
   color: #c34836;
   margin-bottom: 20px;
   font-size: 15px;
 }
-.signin label {
+.signin label,
+.signup label {
   display: block;
   font-size: 14px;
 }
 .signin input,
-.signin button {
+.singup input,
+.signin button,
+.signup button {
   display: block;
   box-sizing: border-box;
   width: 100%;
   padding: 2px 5px;
 }
-.signin input {
+.signin input,
+.signup input {
   border: 1px solid #aaa;
   border-radius: 3px;
   background: #fff;
@@ -81,7 +83,8 @@ main {
   font-size: 20px;
   margin-bottom: 15px;
 }
-.signin button {
+.signin button,
+.signup button {
   border: 0;
   border-radius: 3px;
   padding: 0 0 3px;

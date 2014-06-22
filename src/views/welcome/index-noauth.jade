@@ -1,5 +1,8 @@
 extends ../layout
 block header
-  a.signin(href="/signin") Sign in
+  .user-info
+    a.signin(href="/signin") Sign in
+    = ' or '
+    a.signup(href="/signup") sign up
 block content
   p You need to sign in first.

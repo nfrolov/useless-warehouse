@@ -1,6 +1,30 @@
 var async = require('async'),
     query = require('../utils/query');
 
+exports.create = function (client, cb) {
+  var insertAccountQuery = '' +
+    '    INSERT INTO warehouse.account (username, password) ' +
+    '    VALUES ($1, $2) ' +
+    ' RETURNING account_id id ';
+  var insertClientQuery = '' +
+    '    INSERT INTO warehouse.client (client_id, name) ' +
+    '    VALUES ($1, $2) ';
+
+  async.waterfall([
+    function (cb) {
+      var params = [client.username, client.password];
+      query(insertAccountQuery, params, cb);
+    },
+    function (rows, raw, cb) {
+      client.id = rows[0].id;
+      var params = [client.id, client.name];
+      query(insertClientQuery, params, cb);
+    }
+  ], function (err) {
+    cb(err, client);
+  });
+};
+
 exports.get = function (id, cb) {
   var queryString = '' +
     ' SELECT c.client_id id, c.name, c.credit_limit, ' +

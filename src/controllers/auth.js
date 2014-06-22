@@ -1,6 +1,7 @@
 var async = require('async'),
-    express = require('express');
+    express = require('express'),
     accountDao = require('../daos/account'),
+    clientDao = require('../daos/client'),
     bcrypt = require('bcrypt');
 
 exports.inject = function (req, res, next) {
@@ -55,5 +56,61 @@ router.get('/signout', function (req, res) {
   req.session = null;
   res.redirect('/');
 });
+
+router.get('/signup', function (req, res) {
+  res.render('auth/signup', {
+    client: createClient()
+  });
+});
+
+router.post('/signup', function (req, res, next) {
+  var client = createClient(req.body),
+      errors = validateClient(client);
+
+  if (errors.length) {
+    res.render('auth/signup', {
+      client: client,
+      errors: errors
+    });
+  } else {
+    async.waterfall([
+      function (cb) {
+        bcrypt.hash(client.password, 8, cb);
+      },
+      function (hash, cb) {
+        client.password = hash;
+        clientDao.create(client, cb);
+      }
+    ], function (err) {
+      if (err) return next(err);
+      res.redirect('/signin');
+    });
+  }
+});
+
+function createClient(params) {
+  params = params || {};
+  return {
+    name: params.name || '',
+    username: params.username || '',
+    password: params.password || ''
+  };
+}
+
+function validateClient(client) {
+  var errors = [];
+
+  if (!client.name) {
+    errors.push("Name is required");
+  }
+  if (!client.username) {
+    errors.push("Username is required");
+  }
+  if (!client.password) {
+    errors.push("Password is required");
+  }
+
+  return errors;
+}
 
 exports.router = router;
