@@ -1,4 +1,5 @@
 var async = require('async'),
+    express = require('express');
     accountDao = require('../daos/account'),
     bcrypt = require('bcrypt');
 
@@ -12,11 +13,13 @@ exports.inject = function (req, res, next) {
   next();
 };
 
-exports.form = function (req, res) {
-  res.render('auth/signin');
-};
+var router = express.Router();
 
-exports.signin = function (req, res) {
+router.get('/signin', function (req, res) {
+  res.render('auth/signin');
+});
+
+router.post('/signin', function (req, res, next) {
   var username = req.body.username,
       password = req.body.password;
 
@@ -34,9 +37,7 @@ exports.signin = function (req, res) {
       });
     }
   ], function (err, matches, account) {
-    if (err) {
-      return res.end(err.toString());
-    }
+    if (err) return next(err);
     if (matches) {
       req.session.account_id = account.account_id;
       req.session.role = account.worker_id === null ? 'client' : 'worker';
@@ -48,9 +49,11 @@ exports.signin = function (req, res) {
       });
     }
   });
-};
+});
 
-exports.signout = function (req, res) {
+router.get('/signout', function (req, res) {
   req.session = null;
   res.redirect('/');
-};
+});
+
+exports.router = router;

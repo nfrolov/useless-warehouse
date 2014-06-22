@@ -8,10 +8,6 @@ module.exports = function (app) {
 
   app.get('/', controllers.welcome.index);
 
-  app.get('/signin', controllers.auth.form);
-  app.post('/signin', controllers.auth.signin);
-  app.get('/signout', controllers.auth.signout);
-
   app.get('/categories', workerOnly, controllers.category.index);
   app.get('/categories/new', workerOnly, controllers.category.new);
   app.post('/categories', workerOnly, controllers.category.create);
@@ -26,6 +22,7 @@ module.exports = function (app) {
   app.put('/products/:id', workerOnly, controllers.product.update);
   app.delete('/products/:id', workerOnly, controllers.product.destroy);
 
+  app.use(controllers.auth.router);
   app.use(controllers.store.router);
   app.use(controllers.profile.router);
   app.use(controllers.order.router);
