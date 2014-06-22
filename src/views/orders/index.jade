@@ -16,7 +16,7 @@ block content
           td
             a.edit(href="/orders/#{order.id}") View
             form(action="/orders/#{order.id}/ship", method="post")
-              button.ship(type="submit") Ship
+              button.ship(type="submit", disabled=(order.shipped_at !== null)) Ship
       else
         tr.message
           td(colspan="4") No orders yet
