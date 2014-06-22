@@ -1,17 +1,20 @@
 var async = require('async'),
+    express = require('express'),
     productDao = require('../daos/product'),
     categoryDao  = require('../daos/category');
 
-exports.index = function (req, res, next) {
+var router = express.Router();
+
+router.get('/products', workerOnly, function (req, res, next) {
   productDao.find(function (err, products) {
     if (err) return next(err);
     res.render('products/index', {
       products: products
     });
   });
-};
+});
 
-exports.new = function (req, res) {
+router.get('/products/new', workerOnly, function (req, res) {
   categoryDao.find(function (err, categories) {
     if (err) return next(err);
     res.render('products/new', {
@@ -19,9 +22,9 @@ exports.new = function (req, res) {
       product: createProduct()
     });
   });
-};
+});
 
-exports.create = function (req, res, next) {
+router.post('/products', workerOnly, function (req, res, next) {
   var product = createProduct(req.body),
       errors = validateProduct(product);
 
@@ -40,9 +43,9 @@ exports.create = function (req, res, next) {
       res.redirect('/products');
     });
   }
-};
+});
 
-exports.edit = function (req, res, next) {
+router.get('/products/:id/edit', workerOnly, function (req, res, next) {
   var id = req.params.id;
 
   async.waterfall([
@@ -56,15 +59,15 @@ exports.edit = function (req, res, next) {
   ], function (err, product) {
     if (err) return next(err);
     if (!product) {
-      res.send(404, 'Product does not exist');
+      return res.send(404, 'Product does not exist');
     }
     res.render('products/edit', {
       product: product
     });
   });
-};
+});
 
-exports.update = function (req, res, next) {
+router.put('/products/:id', workerOnly, function (req, res, next) {
   var id = req.params.id,
       product = createProduct(req.body, id),
       errors = validateProduct(product);
@@ -84,9 +87,9 @@ exports.update = function (req, res, next) {
       res.redirect('/products');
     });
   }
-};
+});
 
-exports.destroy = function (req, res, next) {
+router.delete('/products/:id', workerOnly, function (req, res, next) {
   var id = req.params.id;
 
   productDao.remove(id, function (err, removed) {
@@ -96,7 +99,7 @@ exports.destroy = function (req, res, next) {
     }
     res.redirect('/products');
   });
-};
+});
 
 function createProduct(params, id) {
   params = params || {};
@@ -140,3 +143,12 @@ function validateProduct(prod) {
 
   return errors;
 }
+
+function workerOnly(req, res, next) {
+  if (req.account && req.account.worker) {
+    return next();
+  }
+  res.send(403, 'Access denied');
+}
+
+exports.router = router;
